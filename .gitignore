@@ -1,0 +1,10 @@
+# Build artifacts
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+dist/
+build/
+
+# Generated output
+*.png

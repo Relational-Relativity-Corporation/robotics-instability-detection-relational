@@ -32,8 +32,8 @@ arrivals_i(t)   = (capacity_i + eps) / sum(capacity_j + eps) * GLOBAL_TASK_RATE
 processed_i(t)  = min(Q_i(t), capacity_i(t))
 Q_i(t+1)        = Q_i(t) + arrivals_i(t) - processed_i(t) + diffusion
 
-e_i(t) = 1.0                                                   t < t_disruption
-e_i(t) = max(e_min, 1 - degradation_rate * (t - t_disruption)) t >= t_disruption
+e_i(t) = 1.0                                                    t < t_disruption
+e_i(t) = max(e_min, 1 - degradation_rate * (t - t_disruption))  t >= t_disruption
 ```
 
 Failure condition:
@@ -44,13 +44,7 @@ max(Q_i(t)) >= MAX_QUEUE_DEPTH
 
 ## Detection Layer — ABCRE Derivation
 
-Detection operates on the fleet queue depth vector Q(t) = [Q_0, ..., Q_N-1].
-
-| Conventional     | Relational                  | Derivation                                      |
-|------------------|-----------------------------|-------------------------------------------------|
-| np.var(Q)        | relational_spread(Q)        | ||A(Q)||^2 / n — population variance by construction |
-| rolling_variance | rolling_relational_spread   | Rolling application of relational_spread        |
-| kendall_tau      | relational_momentum         | mean(|C(R(A(W), rho))|) — bounded monotonic trend |
+Detection operates on the fleet queue depth vector `Q(t) = [Q_0, ..., Q_N-1]`.
 
 Operators:
 
@@ -60,6 +54,14 @@ R(x, rho)[i] = x[i] + rho * (x[(i+1) % n] - x[(i-1) % n]) # antisymmetric circul
 C(x)[i]      = x[i] / (1 + |x[i]|)                         # bounded coherence, output in (-1,1)
 ```
 
+Detection pipeline:
+
+```
+relational_spread(Q)   = ||A(Q)||^2 / n          # population variance by construction
+relational_momentum(W) = mean(|C(R(A(W), rho))|) # bounded monotonic trend signal
+```
+
+Replaces `np.var` and `scipy.stats.kendalltau` respectively.
 No scipy dependency. Detection logic is fully derivable from the kernel.
 
 ## Broader Implication
