@@ -10,7 +10,7 @@ This repo is a parallel implementation of
 
 The simulation is physically grounded in task-queue dynamics rather than
 abstract load values. The detection layer replaces scipy-based statistical
-methods (variance, Kendall tau) with operators derived from the ABCRE
+methods (variance, Kendall tau) with operators derived from the ABRCE
 invariant relational kernel.
 
 ## System
@@ -42,7 +42,7 @@ Failure condition:
 max(Q_i(t)) >= MAX_QUEUE_DEPTH
 ```
 
-## Detection Layer — ABCRE Derivation
+## Detection Layer — ABRCE Derivation
 
 Detection operates on the fleet queue depth vector `Q(t) = [Q_0, ..., Q_N-1]`.
 
