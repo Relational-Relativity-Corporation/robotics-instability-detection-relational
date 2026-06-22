@@ -60,7 +60,7 @@ def main():
     ax1.axhline(MAX_QUEUE_DEPTH, color='darkorange', ls='--', alpha=0.3,
                 label='Max queue depth')
     ax1.set_ylabel('Queue Depth')
-    ax1.set_title('Robotics Instability Detection — Relational Kernel (ABCRE)')
+    ax1.set_title('Robotics Instability Detection — Relational Kernel (ABRCE)')
     ax1.legend(fontsize=7, ncol=2)
 
     ax2.plot(t_axis, momentum, color='darkorange', lw=1.5,
