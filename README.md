@@ -1,7 +1,7 @@
 # Robotics Instability Detection — Relational Kernel
 
 Cascade early warning in a multi-robot task-queue fleet with instability
-detection derived from the ABCRE invariant relational kernel.
+detection derived from the ABRCE invariant relational kernel.
 
 ## Relationship to Companion Repo
 
