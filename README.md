@@ -21,7 +21,7 @@ invariant relational kernel.
 - Local ring diffusion redistributes queue load between neighbors each step
 - One robot undergoes gradual efficiency degradation at t_disruption,
   modelling actuator or motor wear
-- Cascade propagates as the degraded robot processes fewer tasks,
+- Under appropriate parameter settings, cascade propagation emerges as the degraded robot processes fewer tasks,
   dispatcher redistributes arrivals, and neighboring queues grow
 
 ## Governing Equations
@@ -61,8 +61,10 @@ relational_spread(Q)   = ||A(Q)||^2 / n          # population variance by constr
 relational_momentum(W) = mean(|C(R(A(W), rho))|) # bounded monotonic trend signal
 ```
 
-Replaces `np.var` and `scipy.stats.kendalltau` respectively.
+Used in place of `np.var` and `scipy.stats.kendalltau` respectively for detection in this application — functional replacement within the declared scope, not mathematical equivalence.
 No scipy dependency. Detection logic is fully derivable from the kernel.
+
+**On the omission of B.** The full ABRCE kernel includes B — local accumulation along declared continuation — between A and R. B is omitted here by declaration, not oversight. The detection pipeline operates on snapshots: the queue depth vector Q(t) at each timestep. B's role is to accumulate relational structure forward along declared continuation across the network, which is the correct operator for predicting where load will propagate to. The detection layer is not asking that question. It asks two snapshot questions only: how spread is the relational structure right now (relational_spread via A), and is that structure trending (relational_momentum via A → R → C). Including B would add forward accumulation the declared detection scope did not request. A pipeline that included B would be making a different declaration — prediction of cascade propagation direction and magnitude — and would require a correspondingly different declared scope.
 
 ## Broader Implication
 
